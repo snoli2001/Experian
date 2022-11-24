@@ -32,7 +32,7 @@ export class SentinelComponent implements OnInit {
         { value: '3', description: 'C.E - Carné de extranjería' },
     ];
     consultantDocumentTypes: DocumentType[] = [
-        { value: '2', description: 'RUC - Registro Único de Contribuyentes' },
+        { value: '1', description: 'DNI - Documento Nacional de Identidad' },
         { value: '3', description: 'C.E - Carné de extranjería' },
     ];
 
