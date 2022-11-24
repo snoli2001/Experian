@@ -12,19 +12,16 @@ export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
     { path: '', pathMatch: 'full', redirectTo: 'code-validation' },
 
-    // Redirect signed in user to the '/example'
+    // Redirect signed in user to the '/code-validation'
     //
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     // { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'example' },
 
-
     // Auth routes for authenticated users
     {
         path: '',
-        // canActivate: [AuthGuard],
-        // canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty',
@@ -40,12 +37,11 @@ export const appRoutes: Route[] = [
         ],
     },
 
-
     // Admin routes
     {
         path: '',
         canActivate: [AuthGuard],
-        // canActivateChild: [AuthGuard],
+        canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty',

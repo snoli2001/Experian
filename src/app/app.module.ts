@@ -34,8 +34,6 @@ const routerConfig: ExtraOptions = {
         CoreModule,
         // Layout module of your application
         LayoutModule,
-        SentinelModule,
-
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({}),
     ],
