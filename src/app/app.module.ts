@@ -12,8 +12,7 @@ import { mockApiServices } from 'app/mock-api';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
-import { SentinelComponent } from './modules/admin/sentinel/sentinel.component';
-import { SentinelModule } from './modules/admin/sentinel/sentinel.module';
+
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -30,7 +29,6 @@ const routerConfig: ExtraOptions = {
         // Fuse, FuseConfig & FuseMockAPI
         FuseModule,
         FuseConfigModule.forRoot(appConfig),
-        FuseMockApiModule.forRoot(mockApiServices),
         CoreModule,
         // Layout module of your application
         LayoutModule,
