@@ -1,0 +1,382 @@
+<div
+    *ngIf="!transactionFinished; else transactionFinishedTemplate"
+    class="w-full flex flex-col justify-center items-center"
+>
+    <mat-stepper
+        linear
+        #stepper
+        class="w-full md:w-1/2 md:border-4 md:rounded-2xl bg-card p-1"
+    >
+        <mat-step>
+            <div class="w-full flex justify-center">
+                <div class="w-auto h-12">
+                    <img
+                        src="assets/images/logo/logoExpiranSentinel.svg"
+                        alt=""
+                    />
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-1 h-15">
+                <div class="w-1/2">
+                    <div class="text-3xl font-semibold text-center">
+                        {{ transactionInfo.nombre_producto }}
+                    </div>
+                </div>
+                <div
+                    class="w-1/2 md:w-1/3 flex flex-col justify-center items-center p-0 md:p-1"
+                >
+                    <div class="flex justify-around w-full items-center">
+                        <div class="font-semibold md:text-xl">Importe:</div>
+                        <div class="text-[#004691]">
+                            S/ {{ transactionInfo.precio }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <fuse-alert
+                [type]="'error'"
+                *ngIf="invalidDocuments"
+                class="mt-5"
+                [dismissible]="true"
+                [dismissed]="false"
+                [name]="'errorAlert'"
+            >
+                <span fuseAlertTitle>Documento Inválido</span>
+                {{ errorMessage }}
+            </fuse-alert>
+            <div class="mt-3">
+                <form [formGroup]="documentsValidationForm">
+                    <div class="flex flex-col items-center mt-5">
+                        <div
+                            class="font-semibold uppercase tracking-wide w-full"
+                        >
+                            Datos del Solicitante
+                            <div
+                                class="w-1/6 border-[#d81ba4] border-b-2 my-1"
+                            ></div>
+                        </div>
+                        <div class="w-full mt-5">
+                            <mat-form-field class="w-full" appereance="fill">
+                                <mat-select
+                                    formControlName="consultantDocumentType"
+                                    placeholder="Tipo de documento"
+                                >
+                                    <mat-option
+                                        *ngFor="
+                                            let documentType of documentTypes
+                                        "
+                                        [value]="documentType.value"
+                                    >
+                                        {{ documentType.description }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="
+                                        documentsValidationForm.get(
+                                            'consultantDocumentType'
+                                        ).invalid &&
+                                        documentsValidationForm.get(
+                                            'consultantDocumentType'
+                                        ).touched
+                                    "
+                                    >Seleccione un tipo de documento
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="w-full">
+                            <mat-form-field class="w-full" appereance="fill">
+                                <input
+                                    [disabled]="disable"
+                                    id="vc_numero_servicio"
+                                    matInput
+                                    placeholder="Número de Documento"
+                                    formControlName="consultantDocumentNumber"
+                                    NumberOnly
+                                />
+                                <mat-error
+                                    *ngIf="
+                                        documentsValidationForm.get(
+                                            'consultantDocumentNumber'
+                                        ).invalid &&
+                                        documentsValidationForm.get(
+                                            'consultantDocumentNumber'
+                                        ).touched
+                                    "
+                                >
+                                    Ingrese un número de documento válido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="font-semibold uppercase tracking-wide w-full"
+                        >
+                            Datos del Consultado
+                            <div
+                                class="w-1/6 border-[#d81ba4] border-b-2 my-1"
+                            ></div>
+                        </div>
+                        <div class="w-full mt-5">
+                            <mat-form-field class="w-full" appereance="fill">
+                                <mat-select
+                                    formControlName="consultedDocumentType"
+                                    placeholder="Tipo de documento"
+                                >
+                                    <mat-option
+                                        *ngFor="
+                                            let documentType of documentTypes
+                                        "
+                                        [value]="documentType.value"
+                                    >
+                                        {{ documentType.description }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="
+                                        documentsValidationForm.get(
+                                            'consultedDocumentType'
+                                        ).invalid &&
+                                        documentsValidationForm.get(
+                                            'consultedDocumentType'
+                                        ).touched
+                                    "
+                                    >Seleccione un tipo de documento
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="w-full">
+                            <mat-form-field class="w-full" appereance="fill">
+                                <input
+                                    id="vc_numero_servicio"
+                                    matInput
+                                    placeholder="Número de Documento"
+                                    formControlName="consultedDocumentNumber"
+                                    NumberOnly
+                                />
+                                <mat-error
+                                    *ngIf="
+                                        documentsValidationForm.get(
+                                            'consultedDocumentNumber'
+                                        ).invalid &&
+                                        documentsValidationForm.get(
+                                            'consultedDocumentNumber'
+                                        ).touched
+                                    "
+                                >
+                                    Ingrese un número de documento válido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="w-full flex justify-center items-center">
+                <button
+                    mat-flat-button
+                    color="primary"
+                    type="button"
+                    (click)="nextStep(stepper)"
+                >
+                    Siguiente
+                </button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <div class="flex flex-col items-center mt-5">
+                <div class="font-semibold uppercase tracking-wide w-full">
+                    Solicitante
+                    <div class="w-1/6 border-[#d81ba4] border-b-2 my-1"></div>
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="consultant">
+                <h3 class="text-[#64748B] font-semibold">
+                    {{ consultant.nombres }} {{ consultant.apellidoPaterno }}
+                    {{ consultant.apellidoMaterno }}
+                </h3>
+                <h3 class="text-[#64748B] font-semibold mt-1">
+                    {{ consultantDocumentNumber }}
+                </h3>
+            </div>
+            <div class="flex flex-col items-center mt-5">
+                <div class="font-semibold uppercase tracking-wide w-full">
+                    Consultado
+                    <div class="w-1/6 border-[#d81ba4] border-b-2 my-1"></div>
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="consulted">
+                <h3 class="text-[#64748B] font-semibold">
+                    {{ consulted.nombres }} {{ consulted.apellidoPaterno }}
+                    {{ consulted.apellidoMaterno }}
+                </h3>
+                <h3 class="text-[#64748B] font-semibold mt-1">
+                    {{ consultedDocumentNumber }}
+                </h3>
+            </div>
+            <form [formGroup]="billInformationForm">
+                <div class="font-semibold uppercase tracking-wide w-full mt-3">
+                    Datos de Envío de Reporte y Facturación
+                    <div class="w-1/6 border-[#d81ba4] border-b-2 my-1"></div>
+                </div>
+                <div
+                    class="flex items-center text-[#64748B] font-semibold mb-1 mt-3"
+                >
+                    <mat-checkbox
+                        formControlName="confirmEmail"
+                        color="primary"
+                        class="example-margin"
+                        >Confirma su correo:
+                        {{ transactionInfo.email_solicitante }}
+                    </mat-checkbox>
+                    <button
+                        class="ml-2 h-8 w-8 text-white bg-primary rounded-full flex items-center justify-center"
+                        (click)="openEditEmail()"
+                    >
+                        <mat-icon
+                            class="icon-size-4 text-white"
+                            svgIcon="heroicons_outline:pencil"
+                        ></mat-icon>
+                    </button>
+                </div>
+                <div
+                    class="flex items-center text-[#64748B] font-semibold mb-1 mt-3"
+                >
+                    <mat-checkbox
+                        formControlName="confirmCellphone"
+                        color="primary"
+                        class="example-margin"
+                        >Confirma su teléfono:
+                        {{ transactionInfo.telefono_solicitante }}
+                    </mat-checkbox>
+                    <button
+                        class="ml-2 h-8 w-8 text-white bg-primary rounded-full flex items-center justify-center"
+                        (click)="openEditCellphone()"
+                    >
+                        <mat-icon
+                            class="icon-size-4 text-white"
+                            svgIcon="heroicons_outline:pencil"
+                        ></mat-icon>
+                    </button>
+                </div>
+                <div class="w-full mt-5">
+                    <mat-form-field class="w-full" appereance="fill">
+                        <mat-select
+                            [disabled]="disable"
+                            id="billType"
+                            placeholder="Tipo de comprobante"
+                            [formControlName]="'billType'"
+                        >
+                            <mat-option value="1">Factura</mat-option>
+                            <mat-option value="2">Boleta de venta</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full" *ngIf="withRUC">
+                    <mat-form-field class="w-full" appereance="fill">
+                        <input
+                            matInput
+                            placeholder="RUC"
+                            formControlName="ruc"
+                            NumberOnly
+                            [maxLength]="11"
+                        />
+                        <mat-error *ngIf="InvalidRUC">
+                            Ingrese un número de RUC válido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="w-full flex justify-center items-center">
+                    <button
+                        mat-flat-button
+                        color="secondary"
+                        class="bg-gray-400 text-white mr-2"
+                        type="button"
+                        (click)="prevStep(stepper)"
+                    >
+                        Atrás
+                    </button>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        type="button"
+                        (click)="generateSentinelReport()"
+                        [disabled]="!billInformationForm.valid"
+                    >
+                        Generar Reporte
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-stepper>
+</div>
+<ng-template #transactionFinishedTemplate>
+    <div class="w-full flex flex-col justify-center items-center">
+        <div
+            *ngIf="isSuccessTransaction; else error"
+            class="md:w-1/2 md:border-4 md:rounded-2xl md:bg-card p-2"
+        >
+            <div class="w-full flex justify-center">
+                <div class="w-auto h-12">
+                    <img
+                        src="assets/images/logo/logoExpiranSentinel.svg"
+                        alt=""
+                    />
+                </div>
+            </div>
+            <div class="w-full flex flex-col justify-center items-center">
+                <h1
+                    class="text-2xl sm:text-3xl text-[#64748B] font-semibold mt-3"
+                >
+                    ¡GRACIAS POR SU COMPRA!
+                </h1>
+                <div class="mt-3 mb-2">
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        type="button"
+                        (click)="goToMainPage()"
+                    >
+                        Ir a la página principal
+                    </button>
+                </div>
+            </div>
+        </div>
+        <ng-template #error>
+            <div class="md:w-1/2 md:border-4 md:rounded-2xl md:bg-card p-2">
+                <div class="w-full flex justify-center">
+                    <div class="w-auto h-12">
+                        <img
+                            src="assets/images/logo/logoExpiranSentinel.svg"
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <div
+                    class="w-full flex flex-col justify-center items-center mt-3"
+                >
+                    <h1
+                        class="text-2xl sm:text-3xl text-[#64748B] font-semibold"
+                    >
+                        ¡HA OCURRIDO UN ERROR!
+                    </h1>
+                    <p class="mt-3 text-xl">
+                        {{ invalidTransactionMessage }}
+                    </p>
+                    <div class="mt-3 mb-2">
+                        <button
+                            mat-flat-button
+                            color="primary"
+                            type="button"
+                            (click)="goToMainPage()"
+                        >
+                            Ir a la página principal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>

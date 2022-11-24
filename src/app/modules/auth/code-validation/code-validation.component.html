@@ -1,0 +1,57 @@
+<div
+    class="relative flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
+>
+    <div class="w-26 absolute top-5 left-5">
+        <img
+            src="assets\images\logo\experian-logo.png"
+        />
+    </div>
+    <div
+        class="mt-12 sm:mt-0 md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+    >
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <!-- Logo -->
+            <fuse-alert
+                [type]="'error'"
+                *ngIf="invalidCode"
+                [dismissible]="true"
+                [dismissed]="false"
+                [name]="'errorAlert'"
+            >
+                <span fuseAlertTitle>PIN Inválido</span>
+                {{ errorMessage }}
+            </fuse-alert>
+            <div class="flex flex-col items-center w-full justify-center">
+                <div class="w-55">
+                    <img src="assets/images/logo/logoExpiranSentinel.svg" />
+                </div>
+            </div>
+
+            <div
+                class="mt-8 text-3xl font-extrabold tracking-tight leading-tight text-[#004691]"
+            >
+                Ingresar Número de PIN
+            </div>
+            <form class="mt-8" action="">
+                <mat-form-field class="w-full">
+                    <mat-label>Número de PIN(Contine letras y números)</mat-label>
+                    <input id="code" matInput [formControl]="code" />
+                </mat-form-field>
+                <button
+                    class="fuse-mat-button-large w-full mt-6 btn-exp-raspberry text-white"
+                    mat-flat-button
+                    (click)="validateCode()"
+                >
+                    <span> Validar Número de PIN </span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="hidden md:flex w-1/2 h-full overflow-hidde dark:border-l">
+        <img
+            class="object-cover w-full"
+            src="../../../../assets/images/banner/code-validation-banner.jpg"
+            alt=""
+        />
+    </div>
+</div>

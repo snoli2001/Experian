@@ -1,0 +1,36 @@
+<div class="w-full">
+    <h1 class="text-[#004691] text-2xl text-center">Actualizar Teléfono</h1>
+    <mat-form-field class="w-full mt-2" appearance="fill">
+        <mat-label>Teléfono</mat-label>
+        <input
+            type="text"
+            matInput
+            [formControl]="cellphoneForm"
+            placeholder="Teléfono"
+            NumberOnly
+            [maxlength]="9"
+        />
+        <mat-error *ngIf="cellphoneForm.invalid">
+            Ingrese un número telefónico válido
+        </mat-error>
+    </mat-form-field>
+    <div class="w-full flex justify-center items-center">
+        <button
+            mat-flat-button
+            color="secondary"
+            class="bg-gray-400 text-white mr-2"
+            type="button"
+            (click)="close()"
+        >
+            Cancelar
+        </button>
+        <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="updateCellphone()"
+        >
+            Actualizar
+        </button>
+    </div>
+</div>

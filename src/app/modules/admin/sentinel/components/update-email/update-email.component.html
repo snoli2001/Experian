@@ -1,0 +1,34 @@
+<div class="w-full">
+    <h1 class="text-[#004691] text-2xl text-center">Actualizar Correo</h1>
+    <mat-form-field class="w-full mt-2" appearance="fill">
+        <mat-label>Correo</mat-label>
+        <input
+            type="text"
+            matInput
+            [formControl]="emailForm"
+            placeholder="Correo"
+        />
+        <mat-error *ngIf="emailForm.invalid">
+            Ingrese un correo válido
+        </mat-error>
+    </mat-form-field>
+    <div class="w-full flex justify-center items-center">
+        <button
+            mat-flat-button
+            color="secondary"
+            class="bg-gray-400 text-white mr-2"
+            type="button"
+            (click)="close()"
+        >
+            Cancelar
+        </button>
+        <button
+            (click)="updateEmail()"
+            mat-flat-button
+            color="primary"
+            type="button"
+        >
+            Actualizar
+        </button>
+    </div>
+</div>
