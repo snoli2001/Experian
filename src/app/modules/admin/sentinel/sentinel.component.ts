@@ -26,11 +26,16 @@ interface DocumentType {
 export class SentinelComponent implements OnInit {
     documentsValidationForm: FormGroup;
     billInformationForm: FormGroup;
-    documentTypes: DocumentType[] = [
+    consultedDocumentTypes: DocumentType[] = [
         { value: '1', description: 'DNI - Documento Nacional de Identidad' },
         { value: '2', description: 'RUC - Registro Único de Contribuyentes' },
         { value: '3', description: 'C.E - Carné de extranjería' },
     ];
+    consultantDocumentTypes: DocumentType[] = [
+        { value: '2', description: 'RUC - Registro Único de Contribuyentes' },
+        { value: '3', description: 'C.E - Carné de extranjería' },
+    ];
+
     invalidDocuments: boolean = false;
     errorMessage: string = '';
     transactionInfo: CodeValidationResponse;
