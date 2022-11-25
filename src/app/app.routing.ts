@@ -28,6 +28,13 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: '',
+                loadChildren: () =>
+                    import(
+                        'app/modules/auth/code-validation/code-validation.module'
+                    ).then((m) => m.CodeValidationModule),
+            },
+            {
                 path: 'code-validation',
                 loadChildren: () =>
                     import(
