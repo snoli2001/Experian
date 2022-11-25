@@ -63,7 +63,7 @@ export class GeneralInterceptor implements HttpInterceptor {
                 if (
                     error instanceof HttpErrorResponse &&
                     !this._router.url.includes('/code-validation') &&
-                    error.status === 403
+                    (error.status === 403 || error.status === 401)
                 ) {
                     this.tokenService.signOut();
                     window.location.reload();
