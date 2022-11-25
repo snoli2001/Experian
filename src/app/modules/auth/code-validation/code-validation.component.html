@@ -2,9 +2,7 @@
     class="relative flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
 >
     <div class="w-26 absolute top-5 left-5">
-        <img
-            src="assets\images\logo\experian-logo.png"
-        />
+        <img src="assets\images\logo\experian-logo.png" />
     </div>
     <div
         class="mt-12 sm:mt-0 md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
@@ -34,8 +32,19 @@
             </div>
             <form class="mt-8" action="">
                 <mat-form-field class="w-full">
-                    <mat-label>Número de PIN(Contine letras y números)</mat-label>
-                    <input id="code" matInput [formControl]="code" />
+                    <mat-label
+                        >Número de PIN(Contine letras y números)</mat-label
+                    >
+                    <input
+                        (onpaste)="setNoValue($event)"
+                        id="code"
+                        matInput
+                        type="text"
+                        [inputMask]="pinMask"
+                        placeholder="XXX-XX-XXX"
+                        [formControl]="code"
+                        [value]="code.value | uppercase"
+                    />
                 </mat-form-field>
                 <button
                     class="fuse-mat-button-large w-full mt-6 btn-exp-raspberry text-white"

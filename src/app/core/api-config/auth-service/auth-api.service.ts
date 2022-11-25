@@ -44,7 +44,7 @@ export class AuthApiService {
         return sessionStorage.getItem('apiTokenExpired');
     }
 
-    refreshsessionStorageApiToken(data: ITokenApi): void {
+    refreshSessionStorageApiToken(data: ITokenApi): void {
         sessionStorage.removeItem(TOKEN_KEY);
         sessionStorage.removeItem('apiTokenExpired');
     }

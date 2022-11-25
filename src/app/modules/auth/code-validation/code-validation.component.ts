@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { CodeValidationService } from './services/code-validation.service';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { createMask } from '@ngneat/input-mask';
 
 @Component({
     selector: 'app-code-validation',
@@ -18,6 +19,16 @@ export class CodeValidationComponent implements OnInit {
     ]);
     errorMessage: string = '';
     invalidCode: boolean = false;
+
+    pinMask = createMask({
+        mask: '***-**-***',
+        onBeforePaste: (pastedValue) => {
+            pastedValue = pastedValue.toLocaleUpperCase();
+            this.code.setValue(pastedValue);
+            return pastedValue;
+        },
+    });
+
     constructor(
         private _codeValidationService: CodeValidationService,
         private _router: Router
@@ -26,6 +37,7 @@ export class CodeValidationComponent implements OnInit {
     ngOnInit(): void {}
 
     validateCode(): void {
+        console.log(this.code.value.toUpperCase());
         if (this.code.valid) {
             this.invalidCode = false;
             this._codeValidationService
@@ -42,5 +54,9 @@ export class CodeValidationComponent implements OnInit {
                     }
                 });
         }
+    }
+
+    setNoValue($event): void {
+        this.code.setValue('');
     }
 }

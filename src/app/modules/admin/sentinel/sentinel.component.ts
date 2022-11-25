@@ -96,11 +96,35 @@ export class SentinelComponent implements OnInit {
 
     initDocumentsValidationForm(): void {
         this.documentsValidationForm = this.fb.group({
-            consultedDocumentType: ['', Validators.required],
+            consultedDocumentType: ['1', Validators.required],
             consultedDocumentNumber: ['', [Validators.required]],
-            consultantDocumentType: ['', Validators.required],
+            consultantDocumentType: ['1', Validators.required],
             consultantDocumentNumber: ['', [Validators.required]],
         });
+    }
+    changeValidatorsOfDocumentNumber(): void {
+        this.documentsValidationForm
+            .get('consultedDocumentType')
+            .valueChanges.subscribe((value) => {
+                if (value === '1') {
+                    this.documentsValidationForm
+                        .get('consultedDocumentNumber')
+                        .setValue('');
+                    this.documentsValidationForm
+                        .get('consultedDocumentNumber')
+                        .clearValidators();
+                    this.documentsValidationForm
+                        .get('consultedDocumentNumber')
+                        .addValidators([
+                            Validators.required,
+                            Validators.minLength(8),
+                            Validators.maxLength(8),
+                        ]);
+                }
+
+                if (value === '2') {
+                }
+            });
     }
 
     initBillInformationForm(): void {

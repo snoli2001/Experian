@@ -16,6 +16,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
 import { UpdateCellphoneComponent } from './components/update-cellphone/update-cellphone.component';
+import { InputMaskModule } from '@ngneat/input-mask';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import { UpdateCellphoneComponent } from './components/update-cellphone/update-c
         UtilsModule,
         MatDialogModule,
         MatIconModule,
+        InputMaskModule,
         RouterModule.forChild(sentinelRoutes),
     ],
 })

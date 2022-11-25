@@ -30,6 +30,8 @@ export class GeneralInterceptor implements HttpInterceptor {
     authApi: any;
     isRefreshing: boolean;
     isRefreshingLogin: boolean;
+    private refreshTokenSubject: BehaviorSubject<any> =
+        new BehaviorSubject<any>(null);
 
     constructor(
         injector: Injector,
@@ -65,14 +67,51 @@ export class GeneralInterceptor implements HttpInterceptor {
                     !this._router.url.includes('/code-validation') &&
                     (error.status === 403 || error.status === 401)
                 ) {
-                    this.tokenService.signOut();
-                    window.location.reload();
+                    this.handle401Error(req, next);
                 }
                 return throwError(error);
             })
         ) as any;
     }
 
+    private handle401Error(
+        request: HttpRequest<any>,
+        next: HttpHandler
+    ): Observable<HttpEvent<any>> {
+        if (!this.isRefreshing) {
+            this.isRefreshing = true;
+            this.refreshTokenSubject.next(null);
+
+            return this.authApi.generateApiToken().pipe(
+                switchMap((response: any) => {
+                    this.isRefreshing = false;
+
+                    this.tokenService.saveToken(response.token);
+                    this.refreshTokenSubject.next(response.token);
+
+                    return next.handle(
+                        this.addTokenHeader(request, response.token)
+                    );
+                }),
+                catchError((err) => {
+                    this.isRefreshing = false;
+                    this.tokenService.signOut();
+                    window.location.reload();
+                    return throwError(() => console.log(err));
+                })
+            );
+        }
+
+        return this.refreshTokenSubject.pipe(
+            filter((token) => token !== null),
+            take(1),
+            switchMap((token) =>
+                next.handle(this.addTokenHeader(request, token))
+            )
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     addTokenHeader(request: HttpRequest<any>, token: string): HttpRequest<any> {
         return request.clone({
             setHeaders: {

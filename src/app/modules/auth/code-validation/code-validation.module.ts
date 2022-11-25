@@ -1,3 +1,6 @@
+import { InputMaskModule } from '@ngneat/input-mask';
+/* eslint-disable arrow-body-style */
+import { UtilsModule } from './../../../utils/utils.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -20,6 +23,11 @@ import { FuseAlertModule } from '@fuse/components/alert';
         SharedModule,
         MatProgressBarModule,
         FuseAlertModule,
+        UtilsModule,
+        InputMaskModule.forRoot({
+            isAsync: true, // set to true if native input is lazy loaded
+            inputSelector: 'input',
+        }),
         MatProgressSpinnerModule,
     ],
 })
