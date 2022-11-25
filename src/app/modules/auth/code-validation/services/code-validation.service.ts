@@ -1,6 +1,6 @@
 import { environment } from 'environments/environment';
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Observable, BehaviorSubject, switchMap } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 

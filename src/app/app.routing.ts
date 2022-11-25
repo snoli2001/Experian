@@ -28,13 +28,6 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: '',
-                loadChildren: () =>
-                    import(
-                        'app/modules/auth/code-validation/code-validation.module'
-                    ).then((m) => m.CodeValidationModule),
-            },
-            {
                 path: 'code-validation',
                 loadChildren: () =>
                     import(
@@ -48,7 +41,7 @@ export const appRoutes: Route[] = [
     {
         path: '',
         canActivate: [AuthGuard],
-        // canActivateChild: [AuthGuard],
+        canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty',
